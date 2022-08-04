@@ -20,7 +20,7 @@
     <!-- Base package to search for spring beans -->
     <context:component-scan base-package="org.academiadecodigo.bootcamp"/>
 
-    <import resource="persistence.xml"/>
+    <!--<import resource="persistence.xml"/> -->
     <import resource="presentation.xml"/>
 
 </beans>

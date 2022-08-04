@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
-public class AbastractModel {
+public abstract class AbastractModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

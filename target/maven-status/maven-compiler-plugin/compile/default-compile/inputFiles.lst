@@ -1,1 +1,10 @@
-/Users/barthpt/Documents/codecadet/A_C/Hackaton/src/main/java/org/academiadecodigo/bootcamp/SpringBootstrap.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/persistence/model/dao/GenericDao.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/converter/AbstractConverter.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/persistence/model/Customer.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/command/CustomerDto.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/controller/CustomerController.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/SpringBootstrap.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/service/CustomerService.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/converter/CustomerConverter.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/persistence/model/AbastractModel.java
+/Users/codecadet/Documents/hackathon/src/main/java/org/academiadecodigo/bootcamp/persistence/model/dao/CustomerDao.java

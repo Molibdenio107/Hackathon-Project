@@ -1,4 +1,4 @@
-Welcome to Team Buerners Lee
+cd Welcome to Team Buerners Lee
 
 Comms channel on Slack
 Gitlab pool for commom repo
