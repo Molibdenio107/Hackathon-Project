@@ -20,6 +20,10 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
+  <!--
+    alter param-value for dev, prod or test to change persistence .xml
+    Also change database name on hackaton.properties on resource for acessing sql database
+ -->
   <context-param>
     <param-name>spring.profiles.active</param-name>
     <param-value>dev</param-value>
