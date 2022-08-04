@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.academiadecodigo.javabank</groupId>
-    <artifactId>javabank-step13-rest</artifactId>
+    <artifactId>TeamBurnersLee</artifactId>
     <version>0.0.1</version>
     <packaging>war</packaging>
     <name>Team Burners Lee</name>
@@ -157,7 +157,7 @@
 
     <build>
 
-        <finalName>Java Bank</finalName>
+        <finalName>Hackathon</finalName>
 
         <plugins>
 
@@ -183,7 +183,7 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>tomcat</server>
-                    <path>/testAPI</path>
+                    <path>/theproclaimer </path>
                 </configuration>
             </plugin>
 

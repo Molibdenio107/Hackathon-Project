@@ -1,8 +1,7 @@
 package org.academiadecodigo.bootcamp.controller.rest;
 
 import org.academiadecodigo.bootcamp.command.CustomerDto;
-import org.academiadecodigo.bootcamp.converters.CustomerDtoToCustomer;
-import org.academiadecodigo.bootcamp.converters.CustomerToCustomerDto;
+import org.academiadecodigo.bootcamp.converters.CustomerConverter;
 import org.academiadecodigo.bootcamp.persistence.model.Customer;
 import org.academiadecodigo.bootcamp.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,7 @@ import java.util.stream.Collectors;
 public class RestCustomerController {
 
     private CustomerService customerService;
-    private CustomerDtoToCustomer customerDtoToCustomer;
-    private CustomerToCustomerDto customerToCustomerDto;
+    private CustomerConverter customerConverter;
 
     /**
      * Sets the customer service
@@ -43,21 +41,11 @@ public class RestCustomerController {
     /**
      * Sets the converter for converting between customer DTO and customer model objects
      *
-     * @param customerDtoToCustomer the customer DTO to customer converter to set
+     * @param customerConverter the customer DTO to customer converter to set
      */
     @Autowired
-    public void setCustomerDtoToCustomer(CustomerDtoToCustomer customerDtoToCustomer) {
-        this.customerDtoToCustomer = customerDtoToCustomer;
-    }
-
-    /**
-     * Sets the converter for converting between customer model objects and customer DTO
-     *
-     * @param customerToCustomerDto the customer to customer DTO converter to set
-     */
-    @Autowired
-    public void setCustomerToCustomerDto(CustomerToCustomerDto customerToCustomerDto) {
-        this.customerToCustomerDto = customerToCustomerDto;
+    public void setCustomerConverter(CustomerConverter customerConverter) {
+        this.customerConverter = customerConverter;
     }
 
     /**
@@ -69,7 +57,7 @@ public class RestCustomerController {
     public ResponseEntity<List<CustomerDto>> listCustomers() {
 
         List<CustomerDto> customerDtos = customerService.list().stream()
-                .map(customer -> customerToCustomerDto.convert(customer))
+                .map(customer -> customerConverter.converttoDTO(customer))
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(customerDtos, HttpStatus.OK);
@@ -90,7 +78,7 @@ public class RestCustomerController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(customerToCustomerDto.convert(customer), HttpStatus.OK);
+        return new ResponseEntity<>(customerConverter.converttoDTO(customer), HttpStatus.OK);
     }
 
     /**
@@ -108,7 +96,7 @@ public class RestCustomerController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Customer savedCustomer = customerService.save(customerDtoToCustomer.convert(customerDto));
+        Customer savedCustomer = customerService.save(customerConverter.convert(customerDto));
 
         // get help from the framework building the path for the newly created resource
         UriComponents uriComponents = uriComponentsBuilder.path("/api/customer/" + savedCustomer.getId()).build();
@@ -145,7 +133,7 @@ public class RestCustomerController {
 
         customerDto.setId(id);
 
-        customerService.save(customerDtoToCustomer.convert(customerDto));
+        customerService.save(customerConverter.convert(customerDto));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

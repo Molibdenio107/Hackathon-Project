@@ -9,13 +9,15 @@ import java.util.List;
  * The customer model entity
  */
 @Entity
-@Table(name = "customer")
+@Table(name = "customers")
 public class Customer extends AbstractModel {
 
+    private String userName;
+    private String password;
     private String firstName;
     private String lastName;
     private String email;
-    private String phone;
+    private Integer phone;
 
     @OneToMany(
             // propagate changes on customer entity to account entities
@@ -33,114 +35,103 @@ public class Customer extends AbstractModel {
     )
     private List<Addresses> addresses = new ArrayList<>();
 
-    @OneToMany(
-            // propagate changes on customer entity to account entities
-            cascade = {CascadeType.ALL},
-
-            // make sure to remove sales if unlinked from customer
-            orphanRemoval = true,
-
-            // use recipient foreign key on recipient table to establish
-            // the many-to-one relationship instead of a join table
-            mappedBy = "customer"
-    )
-    private List<Sales> sales = new ArrayList<>();
 
     /**
-     * Gets the first name of the customer
      *
-     * @return the customer last name
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     *
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    /**
+     *
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     *
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     *
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * Sets the first name of the customer
      *
-     * @param firstName the name to set
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * Gets the last name of the customer
      *
-     * @return the customer last name
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * Sets the last name of the customer
      *
-     * @param lastName the name to set
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * Gets the email of the customer
      *
-     * @return the customer email
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Sets the email of the customer
      *
-     * @param email the email to set
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Gets the phone of the customer
      *
-     * @return the customer phone
      */
-    public String getPhone() {
+    public Integer getPhone() {
         return phone;
     }
 
     /**
-     * Sets the phone of the customer
      *
-     * @param phone the phone to set
      */
-    public void setPhone(String phone) {
+    public void setPhone(Integer phone) {
         this.phone = phone;
     }
 
     /**
-     * Gets the customer addresses
      *
-     * @return the addresses
      */
     public List<Addresses> getAddresses() {
         return addresses;
     }
-    public void setAddresses(List<Addresses> addresses) {
-        this.addresses = addresses;
-    }
 
     /**
-     * Gets the customer sales
      *
-     * @return the sales
      */
-    public List<Sales> getSales() {
-        return sales;
-    }
-
-    public void setSales(List<Sales> sales) {
-        this.sales = sales;
+    public void setAddresses(List<Addresses> addresses) {
+        this.addresses = addresses;
     }
 
     /**

@@ -6,12 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="javabank-step13-rest" />
+        <module name="TeamBurnersLee" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="hackathon" target="1.8" />
-      <module name="javabank-step13-rest" target="1.8" />
+      <module name="TeamBurnersLee" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
