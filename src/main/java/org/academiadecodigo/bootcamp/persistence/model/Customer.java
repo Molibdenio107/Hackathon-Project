@@ -1,4 +1,9 @@
 package org.academiadecodigo.bootcamp.persistence.model;
 
-public class Customer {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "customer")
+public class Customer extends AbastractModel{
+
 }
