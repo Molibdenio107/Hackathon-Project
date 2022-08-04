@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="hackathon" target="1.5" />
+      <module name="hackathon" target="1.8" />
       <module name="javabank-step13-rest" target="1.8" />
     </bytecodeTargetLevel>
   </component>
