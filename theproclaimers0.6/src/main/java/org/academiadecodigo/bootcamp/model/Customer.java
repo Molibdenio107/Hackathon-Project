@@ -61,6 +61,21 @@ public class Customer {
     )
     private List<Addresses> addresses = new ArrayList<>();
 
+    @OneToOne(
+            // propagate changes on customer entity to account entities
+            cascade = {CascadeType.ALL},
+
+            // make sure to remove addresses if unlinked from customer
+            orphanRemoval = true,
+
+            // user customer foreign key on account table to establish
+            // the many-to-one relationship instead of a join table
+            mappedBy = "customer",
+
+            // fetch addresses from database together with user
+            fetch = FetchType.EAGER
+    )
+    private Cart cart;
 
     public Long getId() {
         return id;
@@ -132,6 +147,22 @@ public class Customer {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<Addresses> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Addresses> addresses) {
+        this.addresses = addresses;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     @Override

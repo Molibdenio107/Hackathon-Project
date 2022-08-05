@@ -18,44 +18,51 @@ import java.util.List;
 public class CustomerController {
 
     @Autowired
-    CustomerRepository customerRepository;
+    CustomerRepository customer;
 
     @GetMapping("")
     public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+        return customer.findAll();
     }
 
     @PostMapping("")
     public Customer createCustomer(@Valid @RequestBody Customer customer) {
-        return customerRepository.save(customer);
+        return this.customer.save(customer);
     }
 
     @GetMapping("/{id}")
     public Customer getCustomerById(@PathVariable(value = "id") Long customerId) {
-        return customerRepository.findById(customerId)
+        return customer.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Note", "id", customerId));
     }
 
     @PutMapping("/{id}")
     public Customer updateCustomer(@PathVariable(value = "id") Long customerId,
-                               @Valid @RequestBody Customer noteDetails) {
+                               @Valid @RequestBody Customer CustomerDetails) {
 
-        Customer note = customerRepository.findById(customerId)
+        Customer customerfound = customer.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Note", "id", customerId));
 
-        note.setUsername(noteDetails.getUsername());
-        note.setPassword(noteDetails.getPassword());
 
-        Customer updatedNote = customerRepository.save(note);
-        return updatedNote;
+        /**
+         * Review all get/set to ensure that all are here
+         */
+        customerfound.setId(customerId);
+        customerfound.setUsername(CustomerDetails.getUsername());
+        customerfound.setPassword(CustomerDetails.getPassword());
+        customerfound.setFirstName(CustomerDetails.getFirstName());
+        customerfound.setLastName(CustomerDetails.getLastName());
+
+        Customer updatedCustomer = customer.save(customerfound);
+        return updatedCustomer;
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable(value = "id") Long customerId) {
-        Customer note = customerRepository.findById(customerId)
+        Customer customer1 = customer.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Note", "id", customerId));
 
-        customerRepository.delete(note);
+        customer.delete(customer1);
 
         return ResponseEntity.ok().build();
     }

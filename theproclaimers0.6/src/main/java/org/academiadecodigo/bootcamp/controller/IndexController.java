@@ -11,7 +11,9 @@ public class IndexController {
 
     @GetMapping
     public String sayHello() {
-        return "Hello and Welcome to the Proclaimers.\n" +
-                "You can create a new Customers by making a POST request to /api/customer endpoint.";
+        return "Hello and Welcome to the Proclaimers.<br>" +
+                "To interact with this API just use api/table. GET will retrieve data and POST will add.<br>" +
+                "To Delete or alter you will need customer id, then api/table/{id}. PUT will alter and DELETE will...<br>" +
+                "For example HTTP.GET /api/customer will return all customer on database";
     }
 }
