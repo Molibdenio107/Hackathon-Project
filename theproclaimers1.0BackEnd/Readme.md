@@ -1,6 +1,7 @@
-# Spring Boot, MySQL, JPA, Hibernate Rest API Tutorial
+# Welcome to Team Burners Lee backend project from Hackathon 2022/08/04.
+To set up this side was used Spring Boot, MySQL, JPA, Hibernate to implement Rest API as Web Application to server webpage from our project..
 
-Build Restful CRUD API for a simple Web application using Spring Boot, Mysql, JPA and Hibernate.
+Was built a Restful CRUD API for a simple Web application to alocate Curstomer Information, addresses (Delivery and billing) and shop cart.
 
 ## Requirements
 
@@ -11,6 +12,7 @@ Build Restful CRUD API for a simple Web application using Spring Boot, Mysql, JP
 ## Steps to Setup
 
 **1. Create Mysql database**
+
 ```SQL
 CREATE DATABASE theproclaimer
 ```
