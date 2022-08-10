@@ -4,6 +4,7 @@ import org.academiadecodigo.bootcamp.exception.ResourceNotFoundException;
 import org.academiadecodigo.bootcamp.model.Customer;
 import org.academiadecodigo.bootcamp.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +33,11 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public Customer getCustomerById(@PathVariable(value = "id") Long customerId) {
-        return customer.findById(customerId)
+    public ResponseEntity<Customer> getCustomerById(@PathVariable(value = "id") Long customerId) {
+        Customer customer1 = customer.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Note", "id", customerId));
+
+        return new ResponseEntity<>(customer1, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -54,9 +57,6 @@ public class CustomerController {
         customerfound.setName(CustomerDetails.getName());
         customerfound.setEmail(CustomerDetails.getEmail());
         customerfound.setPhone(CustomerDetails.getPhone());
-        customerfound.setAddress(CustomerDetails.getAddress());
-        customerfound.setCity(CustomerDetails.getCity());
-        customerfound.setZipCode(CustomerDetails.getZipCode());
         customerfound.setNif(CustomerDetails.getNif());
 
         Customer updatedCustomer = customer.save(customerfound);

@@ -1,14 +1,17 @@
 package org.academiadecodigo.bootcamp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,7 +22,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
-public class Customer {
+public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,12 +46,26 @@ public class Customer {
     private String name;
     private String email;
     private String phone;
-    private String address;
-    private String number;
-    private String city;
-    private String country;
-    private String zipCode;
     private String nif;
+
+    @OneToMany(
+            // propagate changes on customer entity to address entities
+            cascade = {CascadeType.ALL},
+
+            // make sure to remove addresses if unlinked from customer
+            orphanRemoval = true,
+
+            // user customer foreign key on addresses table to establish
+            // the many-to-one relationship instead of a join table
+            mappedBy = "customer",
+
+            // fetch addresses from database together with user
+            fetch = FetchType.EAGER,
+
+            targetEntity = Addresses.class
+    )
+    @JsonManagedReference
+    private List<Addresses> addresses = new LinkedList<>();
 
     @OneToOne(
             // propagate changes on customer entity to account entities
@@ -63,6 +80,7 @@ public class Customer {
 
             // fetch addresses from database together with user
             fetch = FetchType.EAGER,
+
             targetEntity = Cart.class
     )
     private Cart cart;
@@ -131,44 +149,20 @@ public class Customer {
         this.phone = phone;
     }
 
-    public String getAddress() {
-        return address;
+    public List<Addresses> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddresses(List<Addresses> addresses) {
+        this.addresses = addresses;
     }
 
-    public String getNumber() {
-        return number;
+    public void setNif(String nif) {
+        this.nif = nif;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public String getNif() {
+        return nif;
     }
 
     public Cart getCart() {
@@ -177,14 +171,6 @@ public class Customer {
 
     public void setCart(Cart cart) {
         this.cart = cart;
-    }
-
-    public String getNif() {
-        return nif;
-    }
-
-    public void setNif(String nif) {
-        this.nif = nif;
     }
 
     @Override
@@ -198,11 +184,6 @@ public class Customer {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", street='" + address + '\'' +
-                ", number='" + number + '\'' +
-                ", city='" + city + '\'' +
-                ", country='" + country + '\'' +
-                ", zipCode='" + zipCode + '\'' +
                 ", cart=" + cart +
                 ", NIF=" + nif +
                 '}';

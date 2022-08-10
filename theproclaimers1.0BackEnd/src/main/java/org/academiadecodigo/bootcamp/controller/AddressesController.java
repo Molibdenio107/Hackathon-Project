@@ -2,6 +2,7 @@ package org.academiadecodigo.bootcamp.controller;
 
 import org.academiadecodigo.bootcamp.exception.ResourceNotFoundException;
 import org.academiadecodigo.bootcamp.model.Addresses;
+import org.academiadecodigo.bootcamp.model.Customer;
 import org.academiadecodigo.bootcamp.repository.AddressesRepository;
 import org.academiadecodigo.bootcamp.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class AddressesController {
 
     @PostMapping("")
     public Addresses createCustomer(@Valid @RequestBody Addresses address) {
+        address.setCustomer(customer.getById(address.getLoadCustomer()));
         return this.addresses.save(address);
     }
 
@@ -49,14 +51,16 @@ public class AddressesController {
          * Review all get/set to ensure that all are here
          */
         adressfound.setId(addressId);
-        adressfound.setCustomer(addressDetails.getCustomer());
+        Customer foundCustomer = customer.findById(addressDetails.getLoadCustomer())
+                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", addressId));
+        adressfound.setCustomer(foundCustomer);
         adressfound.setStreet(addressDetails.getStreet());
         adressfound.setNumber(addressDetails.getNumber());
         adressfound.setZipCode(addressDetails.getZipCode());
         adressfound.setCountry(addressDetails.getCountry());
 
-
         Addresses updatedAddress = addresses.save(adressfound);
+
         return updatedAddress;
     }
 

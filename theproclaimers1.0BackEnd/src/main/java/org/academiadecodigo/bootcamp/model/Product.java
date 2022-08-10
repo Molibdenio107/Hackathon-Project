@@ -20,6 +20,7 @@ public class Product {
     private String name;
     private String description;
     private Double price;
+
     @OneToMany(
             // propagate changes on customer entity to account entities
             cascade = {CascadeType.ALL},

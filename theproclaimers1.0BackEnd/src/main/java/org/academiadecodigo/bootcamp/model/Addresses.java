@@ -1,6 +1,8 @@
 package org.academiadecodigo.bootcamp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -16,12 +18,16 @@ public class Addresses {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     private Customer customer;
     private String street;
     private String number;
     private String city;
     private String country;
     private String zipCode;
+
+    @Transient
+    private Long loadCustomer;
 
     public Long getId() {
         return id;
@@ -77,6 +83,14 @@ public class Addresses {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public Long getLoadCustomer() {
+        return loadCustomer;
+    }
+
+    public void setLoadCustomer(Long loadCustomer) {
+        this.loadCustomer = loadCustomer;
     }
 
     @Override
