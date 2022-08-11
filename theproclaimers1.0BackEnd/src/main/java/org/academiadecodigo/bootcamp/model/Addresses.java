@@ -1,29 +1,33 @@
 package org.academiadecodigo.bootcamp.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Addresses")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
-public class Addresses {
+public class Addresses implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "customer")
     private Customer customer;
+
+    @NotBlank
     private String street;
     private String number;
+    @NotBlank
     private String city;
     private String country;
+    @NotBlank
     private String zipCode;
 
     @Transient
@@ -41,8 +45,8 @@ public class Addresses {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomer(Customer customerAddresses) {
+        this.customer = customerAddresses;
     }
 
     public String getStreet() {

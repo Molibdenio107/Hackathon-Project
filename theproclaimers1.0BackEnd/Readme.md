@@ -1,7 +1,7 @@
 # Welcome to Team Burners Lee backend project from Hackathon 2022/08/04.
 To set up this side was used Spring Boot, MySQL, JPA, Hibernate to implement Rest API as Web Application to server webpage from our project..
 
-Was built a Restful CRUD API for a simple Web application to alocate Curstomer Information, addresses (Delivery and billing) and shop cart.
+Was built a Restful CRUD API for a simple Web application to alocate Curstomer Information, addresses (Delivery and billing) and shop customerCart.
 
 ## Requirements
 

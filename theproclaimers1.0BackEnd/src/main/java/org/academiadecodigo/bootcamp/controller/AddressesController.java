@@ -17,11 +17,19 @@ import java.util.List;
 @RequestMapping("/api/addresses")
 public class AddressesController {
 
-    @Autowired
     AddressesRepository addresses;
 
-    @Autowired
     CustomerRepository customer;
+
+    @Autowired
+    public void setAddresses(AddressesRepository addresses) {
+        this.addresses = addresses;
+    }
+
+    @Autowired
+    public void setCustomer(CustomerRepository customer) {
+        this.customer = customer;
+    }
 
     @GetMapping("")
     public List<Addresses> getAllCustomers() {
@@ -30,14 +38,15 @@ public class AddressesController {
 
     @PostMapping("")
     public Addresses createCustomer(@Valid @RequestBody Addresses address) {
-        address.setCustomer(customer.getById(address.getLoadCustomer()));
-        return this.addresses.save(address);
+        address.setCustomer(customer.findById(address.getLoadCustomer())
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", address.getLoadCustomer())));
+        return addresses.save(address);
     }
 
     @GetMapping("/{id}")
     public Addresses getCustomerById(@PathVariable(value = "id") Long addressId) {
         return addresses.findById(addressId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", addressId));
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
     }
 
     @PutMapping("/{id}")
@@ -45,14 +54,14 @@ public class AddressesController {
                                    @Valid @RequestBody Addresses addressDetails) {
 
         Addresses adressfound = addresses.findById(addressId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", addressId));
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
 
         /**
          * Review all get/set to ensure that all are here
          */
         adressfound.setId(addressId);
         Customer foundCustomer = customer.findById(addressDetails.getLoadCustomer())
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", addressId));
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
         adressfound.setCustomer(foundCustomer);
         adressfound.setStreet(addressDetails.getStreet());
         adressfound.setNumber(addressDetails.getNumber());
@@ -67,7 +76,7 @@ public class AddressesController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable(value = "id") Long addressId) {
         Addresses customer1 = addresses.findById(addressId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", addressId));
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
 
         addresses.delete(customer1);
 

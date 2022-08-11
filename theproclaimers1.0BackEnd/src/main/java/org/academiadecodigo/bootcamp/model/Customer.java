@@ -1,7 +1,6 @@
 package org.academiadecodigo.bootcamp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -9,10 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -64,7 +60,7 @@ public class Customer implements Serializable {
 
             targetEntity = Addresses.class
     )
-    @JsonManagedReference
+    @JsonManagedReference(value = "customer")
     private List<Addresses> addresses = new LinkedList<>();
 
     @OneToOne(
@@ -76,14 +72,15 @@ public class Customer implements Serializable {
 
             // user customer foreign key on account table to establish
             // the many-to-one relationship instead of a join table
-            mappedBy = "customer",
+            mappedBy = "customerCart",
 
             // fetch addresses from database together with user
             fetch = FetchType.EAGER,
 
             targetEntity = Cart.class
     )
-    private Cart cart;
+    @JsonBackReference(value = "customerCart")
+    private Cart customerCart;
 
     public Long getId() {
         return id;
@@ -165,12 +162,12 @@ public class Customer implements Serializable {
         return nif;
     }
 
-    public Cart getCart() {
-        return cart;
+    public Cart getCustomerCart() {
+        return customerCart;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setCustomerCart(Cart customerCart) {
+        this.customerCart = customerCart;
     }
 
     @Override
@@ -184,8 +181,9 @@ public class Customer implements Serializable {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", cart=" + cart +
-                ", NIF=" + nif +
+                ", nif='" + nif + '\'' +
+                ", addresses=" + addresses +
+                ", customerCart=" + customerCart +
                 '}';
     }
 }

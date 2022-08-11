@@ -1,9 +1,11 @@
 package org.academiadecodigo.bootcamp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +14,14 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank
     private String name;
     private String description;
+
     private Double price;
 
     @OneToMany(
@@ -29,13 +32,16 @@ public class Product {
             orphanRemoval = true,
 
             // user customer foreign key on account table to establish
+            mappedBy = "productCart",
+
             // the many-to-one relationship instead of a join table
-            mappedBy = "product",
+            targetEntity = Cart.class,
 
             // fetch addresses from database together with user
             fetch = FetchType.EAGER
     )
-    private List<Cart> cart = new ArrayList<>();
+    @JsonManagedReference(value = "productCart")
+    private List<Cart> productCart = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -69,6 +75,14 @@ public class Product {
         this.price = price;
     }
 
+    public List<Cart> getProductCart() {
+        return productCart;
+    }
+
+    public void setProductCart(List<Cart> productCart) {
+        this.productCart = productCart;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -76,6 +90,7 @@ public class Product {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
+                ", productCart=" + productCart +
                 '}';
     }
 }

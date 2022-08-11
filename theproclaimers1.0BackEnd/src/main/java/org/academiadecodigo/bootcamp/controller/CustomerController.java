@@ -19,8 +19,12 @@ import java.util.List;
 @RequestMapping("/api/customer")
 public class CustomerController {
 
-    @Autowired
     CustomerRepository customer;
+
+    @Autowired
+    public void setCustomer(CustomerRepository customer) {
+        this.customer = customer;
+    }
 
     @GetMapping("")
     public List<Customer> getAllCustomers() {
@@ -35,7 +39,7 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable(value = "id") Long customerId) {
         Customer customer1 = customer.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
 
         return new ResponseEntity<>(customer1, HttpStatus.OK);
     }
@@ -45,7 +49,7 @@ public class CustomerController {
                                @Valid @RequestBody Customer CustomerDetails) {
 
         Customer customerfound = customer.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
 
 
         /**
@@ -66,7 +70,7 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable(value = "id") Long customerId) {
         Customer customer1 = customer.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
 
         customer.delete(customer1);
 

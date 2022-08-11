@@ -1,26 +1,37 @@
 package org.academiadecodigo.bootcamp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Cart")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
-public class Cart {
+public class Cart implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Multiple JsonBackReference should distinguish them with a specific Reference name
+     */
     @OneToOne
-    private Customer customer;
+    @JsonManagedReference(value = "customerCart")
+    private Customer customerCart;
     @ManyToOne
-    private Product product;
+    @JsonBackReference(value = "productCart")
+    private Product productCart;
     private Integer quantity;
     private Double price;
+
+    @Transient
+    private Long loadCustomer;
+
+    @Transient
+    private Long loadProduct;
 
     public Long getId() {
         return id;
@@ -30,20 +41,20 @@ public class Cart {
         this.id = id;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Customer getCustomerCart() {
+        return customerCart;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerCart(Customer customer) {
+        this.customerCart = customer;
     }
 
-    public Product getProduct() {
-        return product;
+    public Product getProductCart() {
+        return productCart;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductCart(Product product) {
+        this.productCart = product;
     }
 
     public Integer getQuantity() {
@@ -62,12 +73,28 @@ public class Cart {
         this.price = price;
     }
 
+    public Long getLoadCustomer() {
+        return loadCustomer;
+    }
+
+    public void setLoadCustomer(Long loadCustomer) {
+        this.loadCustomer = loadCustomer;
+    }
+
+    public Long getLoadProduct() {
+        return loadProduct;
+    }
+
+    public void setLoadProduct(Long loadProduct) {
+        this.loadProduct = loadProduct;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
                 "id=" + id +
-                ", customer=" + customer +
-                ", product=" + product +
+                ", customer=" + customerCart +
+                ", product=" + productCart +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 '}';

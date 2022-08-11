@@ -4,6 +4,7 @@ import org.academiadecodigo.bootcamp.exception.ResourceNotFoundException;
 import org.academiadecodigo.bootcamp.model.Product;
 import org.academiadecodigo.bootcamp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +13,14 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping(value = "/api/product")
 public class ProductController {
+    private ProductRepository product;
+
     @Autowired
-    ProductRepository product;
+    public void setProduct(ProductRepository product) {
+        this.product = product;
+    }
 
     @GetMapping("")
     public List<Product> getAllProduct() {
@@ -30,21 +35,23 @@ public class ProductController {
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable(value = "id") Long productId) {
         return product.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", productId));
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
     }
 
     @PutMapping("/{id}")
     public Product updateProduct(@PathVariable(value = "id") Long productId,
-                               @Valid @RequestBody Product cartDetails) {
+                               @Valid @RequestBody Product productDetails) {
 
         Product productfound = product.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", productId));
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
 
         /**
          * Review all get/set to ensure that all are here
          */
         productfound.setId(productId);
-        productfound.setPrice(cartDetails.getPrice());
+        productfound.setName(productDetails.getName());
+        productfound.setDescription(productDetails.getDescription());
+        productfound.setPrice(productDetails.getPrice());
 
         Product updatedProduct = product.save(productfound);
         return updatedProduct;
@@ -53,7 +60,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable(value = "id") Long productId) {
         Product product = this.product.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", productId));
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
 
         this.product.delete(product);
 
